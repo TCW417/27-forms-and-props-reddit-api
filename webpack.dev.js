@@ -15,6 +15,11 @@ webpackDevConfig.devServer = {
   open: true, // opens a new tab in our default browser
   hot: true, // hot reloads our changes every time we save
   historyApiFallback: true,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+  },
 };
 
 webpackDevConfig.plugins = [

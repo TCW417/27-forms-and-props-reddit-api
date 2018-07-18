@@ -1,34 +1,62 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import superagent from 'superagent';
+
 import RedditSearch from './components/reddit-search/reddit-search';
+import RedditDetail from './components/reddit-detail/reddit-detail';
+import './style/main.scss';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       searchResultsList: [],
-      searchDetailItem: {},
+      // searchResultsLimit: 10,
+      selectedItem: {},
       loading: false,
     };
   }
 
-  redditSearch = (search) => {
-    console.log('searching for', search);
+  loadData = (search, limit) => {
+    this.setState({ loading: true });
+    return superagent.get(`http://www.reddit.com/r/${search}.json?limit=${limit}`)
+      .then((data) => {
+        this.setState({ loading: false });
+        return data.body.data.children;
+      })
+      .catch(console.error);
   }
 
-  searchResultsList = ['item 1', 'item 2'];
+  redditSearch = (search, limit) => {
+    return this.loadData(search, limit)
+      .then((searchResultsList) => {
+        this.setState({ searchResultsList });
+      })
+      .catch(console.error);
+  }
+
+  renderDetail = (event) => {
+    event.preventDefault();
+    console.log('item', event.target.id, 'clicked');
+    const selectedItem = this.state.searchResultsList[event.target.id];
+    this.setState({ selectedItem });
+  }
 
   render() {
     return (
-      <React.Fragment>
-        <h1>Lab 27: Reddit Search</h1>
+      <div className="root">
+      <h1>Lab 27: Reddit Search</h1>   
+      <div className="container">
         <RedditSearch
-          searchResults={this.searchResultsList}
+          searchResultsList={this.state.searchResultsList}
           searchCallback={this.redditSearch}
+          detailLoader={this.renderDetail}
         />
-        {/* <RedditResults
-        /> */}
-      </React.Fragment>
+        <RedditDetail
+          detail={this.state.selectedItem}
+        />
+      </div>
+      </div>
     );
   }
 }

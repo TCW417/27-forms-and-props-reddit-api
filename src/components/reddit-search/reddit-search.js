@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './reddit-search.scss';
 
 export default class RedditSearch extends React.Component {
   constructor(props) {
@@ -15,9 +16,15 @@ export default class RedditSearch extends React.Component {
     this.setState({ search });
   };
 
+  handleSliderChange = (event) => {
+    const resultsLength = event.target.value;
+    console.log('event.target.value', resultsLength);
+    this.setState({ resultsLength });
+  };
+
   handleSearchSubmit = (event) => {
     event.preventDefault();
-    this.props.searchCallback(this.state.search);
+    this.props.searchCallback(this.state.search, this.state.resultsLength);
   }
 
   render() {
@@ -29,12 +36,33 @@ export default class RedditSearch extends React.Component {
             onChange={this.handleSearchBoxChange}
             placeholder="Search..."
           />
-          <ul>
+          <input
+            type="range" 
+            min="1" 
+            max="100" 
+            value={this.resultsLength} 
+            className="slider"
+            onChange={this.handleSliderChange}
+          />
+          <span className="slider-value">{this.state.resultsLength}</span>
+            <div className="results">
             {
-              this.props.searchResults.map((r, i) => <li key={i}>{r}</li>)
+              this.props.searchResultsList.map((r, i) => {
+                return (
+                  <div key={i}>
+                    <div
+                      className="search-item"
+                      id={i}
+                      onClick={ this.props.detailLoader }
+                    > 
+                      <b>UPS:</b> {r.data.ups} <b>TITLE:</b> {r.data.title}
+                    </div>
+                  </div>
+                );
+              })
             }
-          </ul>
-        </form>
+            </div>
+            </form>
       </div>
     );
   }
@@ -42,5 +70,6 @@ export default class RedditSearch extends React.Component {
 
 RedditSearch.propTypes = {
   searchCallback: PropTypes.func,
-  searchResults: PropTypes.array,
+  searchResultsList: PropTypes.array,
+  detailLoader: PropTypes.func,
 };

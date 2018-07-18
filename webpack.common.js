@@ -19,7 +19,7 @@ webpackConfig.output = {
 
 webpackConfig.plugins = [
   new HtmlWebpackPlugin({
-    title: 'Day 26 React App',
+    title: 'Day 27 React App',
   }),
   new DefinePlugin({
     API_URL: JSON.stringify(process.env.API_URL),

@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "dotenv": "^6.0.0",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "superagent": "^3.8.3"
   }
 }
