@@ -1,0 +1,21 @@
+* {
+  font-family: sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+input {
+  font-size: 1.2em;
+}
+
+.slider-value {
+  font-size: 1.2em;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-column-gap: 2%;
+}
