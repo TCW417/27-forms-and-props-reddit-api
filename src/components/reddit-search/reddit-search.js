@@ -28,8 +28,10 @@ export default class RedditSearch extends React.Component {
   }
 
   render() {
+    const searchClasses = this.props.searchResultsList ? 'search-list' : 'search-list search-error';
+    console.log('searchClasses', searchClasses);
     return (
-      <div className="search-list">
+      <div className={searchClasses}>
         <form onSubmit={this.handleSearchSubmit}>
           <input 
             type="text"
@@ -45,24 +47,25 @@ export default class RedditSearch extends React.Component {
             onChange={this.handleSliderChange}
           />
           <span className="slider-value">{this.state.resultsLength}</span>
-            <div className="results">
-            {
-              this.props.searchResultsList.map((r, i) => {
+          <div className="results">
+            { this.props.searchResultsList 
+              ? this.props.searchResultsList.map((r, i) => {
                 return (
-                  <div key={i}>
-                    <div
-                      className="search-item"
-                      id={i}
-                      onClick={ this.props.detailLoader }
-                    > 
-                      <b>UPS:</b> {r.data.ups} <b>TITLE:</b> {r.data.title}
+                    <div key={i}>
+                      <div
+                        className="search-item"
+                        id={i}
+                        onClick={ this.props.detailLoader }
+                      > 
+                        <b>UPS:</b> {r.data.ups} <b>TITLE:</b> {r.data.title}
+                      </div>
                     </div>
-                  </div>
                 );
               })
+              : null
             }
-            </div>
-            </form>
+          </div>
+        </form>
       </div>
     );
   }

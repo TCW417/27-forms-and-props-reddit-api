@@ -24,12 +24,17 @@ class App extends React.Component {
         this.setState({ loading: false });
         return data.body.data.children;
       })
-      .catch(console.error);
+      .catch((err) => {
+        // add class that turns the forms input borders red...
+        // not sure how errors will occur...
+
+      });
   }
 
   redditSearch = (search, limit) => {
     return this.loadData(search, limit)
       .then((searchResultsList) => {
+        searchResultsList.sort((a, b) => b.data.ups - a.data.ups);
         this.setState({ searchResultsList });
       })
       .catch(console.error);
